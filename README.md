@@ -119,7 +119,9 @@ Electron（原名为 Atom Shell）是 GitHub 开发的一个开源框架。它�
 | 常规运行 | http://localhost:8080<br>http://anchnet.com |
 | 本地运行 | file:///home/index.html |
 
-***Q:*** 为什么要本地化运行？ ***A:*** 内网环境、减少环境搭建
+***Q:*** 为什么要本地化运行？
+
+***A:*** 内网环境、减少环境搭建
 
 ***关键点：***Webpack [output.publicPath](https://webpack.docschina.org/configuration/output/#outputpublicpath) 配置项
 
@@ -135,9 +137,10 @@ module.exports = {
 }
 ```
 
-***项目架构：***[CRACO](https://github.com/gsoft-inc/craco) / [Creat React App](https://create-react-app.dev/)
+### 案例
+项目架构：[CRACO](https://github.com/gsoft-inc/craco) / [Creat React App](https://create-react-app.dev/)
 
-***脚本：***[npm run eject](https://create-react-app.dev/docs/available-scripts#npm-run-eject)
+脚本：[npm run eject](https://create-react-app.dev/docs/available-scripts#npm-run-eject)
 
 ![npm run eject](https://raw.githubusercontent.com/xiaoda/electron/main/res/eject.png)
 
@@ -159,19 +162,33 @@ config/webpack.config.js
   options: {
     name: 'static/media/[name].[hash:8].[ext]',
     publicPath: '../../'
-  },
+  }
+}
 ```
+
+同源策略报错
 
 ![CORS error](https://raw.githubusercontent.com/xiaoda/electron/main/res/cors-error.png)
 
 关闭 Chrome 同源策略
 
 ```
-# Mac
+// Mac
 open /Applications/Google\ Chrome.app --args --user-data-dir="/var/tmp/Chrome dev session" --disable-web-security
 
-# Windows
+// Windows
 chrome.exe --user-data-dir="C:/Chrome dev session" --disable-web-security
+```
+
+Electron 窗口禁用同源策略
+
+``` javascript
+const { BrowserWindow } = require('electron')
+const win = new BrowserWindow({
+  webPreferences: {
+    webSecurity: false
+  }
+})
 ```
 
 ## 相关资料
