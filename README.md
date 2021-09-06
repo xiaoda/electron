@@ -104,6 +104,17 @@ Q: 打印网页只有页面结构没有数据，可能是什么原因？
 2. 远程网站更新方便
 3. 项目能够同时运行在浏览器和客户端
 
+## 编译打包工具：[electron-forge](https://www.electronforge.io/) / [electron-builder](https://www.electron.build/)
+
+***注意点***
+1. 各操作系统都可以编译打包三个操作系统的客户端软件，具体参数见 CLI 文档。
+2. Linux 系统的客户端打开方式
+
+```
+cd ./electron-build
+./electron-app
+```
+
 ## 公司相关项目
 
 | 项目 | 使用原因 |
