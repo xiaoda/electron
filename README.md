@@ -25,6 +25,9 @@ Electron（原名为 Atom Shell）是 GitHub 开发的一个开源框架。它�
 2. 性能表现好
 3. 接近底层
 
+***趋势：***
+1. 桌面客户端软件逐渐被网页和移动端 App 替代
+
 ***一些问题：***
 1. 为什么越来越多客户端软件使用 Web 前端技术开发？
 2. 为什么 Web 前端技术开发 UI 界面效率高？
@@ -40,7 +43,7 @@ Electron（原名为 Atom Shell）是 GitHub 开发的一个开源框架。它�
 | Node 集成 | 集成操作系统模块 | 给 Chromium 打补丁 |
 | Javascript 上下文 | 不区分上下文 | 区分 Node 上下文和 Web 上下文 |
 | 向后兼容 | Windows 7 | Windows XP |
-| 生态 | 更大的社区，更多应用，更多模块。| 更多 Chrome API 支持 |
+| ***生态 !!!*** | 更大的社区，更多应用，更多模块。| 更多 Chrome API 支持 |
 
 ## 主要功能
 ### 1. 主进程、渲染进程和[窗口通信](https://www.electronjs.org/docs/api/web-contents#contentspostmessagechannel-message-transfer)
@@ -50,11 +53,15 @@ Electron（原名为 Atom Shell）是 GitHub 开发的一个开源框架。它�
 ![Electron 进程2](https://raw.githubusercontent.com/xiaoda/electron/main/res/process2.png)
 
 ``` javascript
-// Main process
+/**
+ * Main process (main.js)
+ */
 const { port1, port2 } = new MessageChannelMain()
 webContents.postMessage('port', { message: 'hello' }, [port1])
 
-// Renderer process
+/**
+ * Renderer process (page.js)
+ */
 ipcRenderer.on('port', (e, msg) => {
   const [port] = e.ports
   // ...
@@ -94,15 +101,22 @@ Q2: [浏览器主要有哪几部分组成？](https://www.html5rocks.com/zh/tuto
 
 ### 3. [打印功能](https://www.electronjs.org/docs/api/web-contents#contentsprintoptions-callback)
 
-Q: 打印网页只有页面结构没有数据，可能是什么原因？
+区别于 [window.print](https://developer.mozilla.org/zh-CN/docs/Web/API/Window/print)
+
+Q: 打印网页时只有页面结构没有数据，可能是什么原因？
 
 ### 4. 本地文件读写（通过 Node.js [fs 模块](http://nodejs.cn/api/fs.html)）
+
+区别于 [FileReader](https://developer.mozilla.org/zh-CN/docs/Web/API/FileReader)
+
 ### 5. [系统通知](https://www.electronjs.org/docs/api/notification)
+
+区别于 [Web Notifications](https://developer.mozilla.org/zh-CN/docs/Web/API/Notifications_API/Using_the_Notifications_API)
 
 ## 其它优点
 1. 最新的 Chromium 内核，没有兼容性问题。
-2. 远程网站更新方便
-3. 项目能够同时运行在浏览器和客户端
+2. 项目能够同时运行在浏览器和客户端
+3. 远程网站更新方便
 
 ## 编译打包工具：[electron-forge](https://www.electronforge.io/) / [electron-builder](https://www.electron.build/)
 
@@ -208,7 +222,7 @@ const win = new BrowserWindow({
 })
 ```
 
-## 相关资料
+## 入门资料
 1. [【译】Electron 的本质](https://segmentfault.com/a/1190000007503495)
 2. [Electron使用指南](https://zhuanlan.zhihu.com/p/142147309)
 
