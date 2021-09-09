@@ -12,8 +12,9 @@ Electron（原名为 Atom Shell）是 GitHub 开发的一个开源框架。它�
 |----|----|
 | 浏览器 | / |
 | 代码编辑器 | VSCode / Atom |
+| 开发辅助工具 | Postman / Apifox |
 | 游戏开发工具 | Cocos Creator |
-| 即时通讯工具 | Slack / Facebook Messenger |
+| 即时通信软件 | Slack / Facebook Messenger |
 | 办公软件 | Microsoft Teams |
 
 ## 传统客户端方案
@@ -44,6 +45,93 @@ Electron（原名为 Atom Shell）是 GitHub 开发的一个开源框架。它�
 | Javascript 上下文 | 不区分上下文 | 区分 Node 上下文和 Web 上下文 |
 | 向后兼容 | Windows 7 | Windows XP |
 | ***生态 !!!*** | 更大的社区，更多应用，更多模块。| 更多 Chrome API 支持 |
+
+## [基础示例](https://www.electronjs.org/docs/tutorial/quick-start)
+main.js
+``` javascript
+// Modules to control application life and create native browser window
+const { app, BrowserWindow } = require('electron')
+const path = require('path')
+
+function createWindow () {
+  // Create the browser window.
+  const mainWindow = new BrowserWindow({
+    width: 800,
+    height: 600,
+    webPreferences: {
+      preload: path.join(__dirname, 'preload.js')
+    }
+  })
+
+  // and load the index.html of the app.
+  mainWindow.loadFile('index.html')
+
+  // Open the DevTools.
+  // mainWindow.webContents.openDevTools()
+}
+
+// This method will be called when Electron has finished
+// initialization and is ready to create browser windows.
+// Some APIs can only be used after this event occurs.
+app.whenReady().then(() => {
+  createWindow()
+
+  app.on('activate', function () {
+    // On macOS it's common to re-create a window in the app when the
+    // dock icon is clicked and there are no other windows open.
+    if (BrowserWindow.getAllWindows().length === 0) createWindow()
+  })
+})
+
+// Quit when all windows are closed, except on macOS. There, it's common
+// for applications and their menu bar to stay active until the user quits
+// explicitly with Cmd + Q.
+app.on('window-all-closed', function () {
+  if (process.platform !== 'darwin') app.quit()
+})
+
+// In this file you can include the rest of your app's specific main process
+// code. You can also put them in separate files and require them here.
+```
+
+preload.js
+``` javascript
+// All of the Node.js APIs are available in the preload process.
+// It has the same sandbox as a Chrome extension.
+window.addEventListener('DOMContentLoaded', () => {
+  const replaceText = (selector, text) => {
+    const element = document.getElementById(selector)
+    if (element) element.innerText = text
+  }
+
+  for (const dependency of ['chrome', 'node', 'electron']) {
+    replaceText(`${dependency}-version`, process.versions[dependency])
+  }
+})
+```
+
+index.html
+``` html
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'">
+    <meta http-equiv="X-Content-Security-Policy" content="default-src 'self'; script-src 'self'">
+    <title>Hello World!</title>
+  </head>
+  <body>
+    <h1>Hello World!</h1>
+    We are using Node.js <span id="node-version"></span>,
+    Chromium <span id="chrome-version"></span>,
+    and Electron <span id="electron-version"></span>.
+
+    <!-- You can also require other files to run in this process -->
+    <script src="./renderer.js"></script>
+  </body>
+</html>
+```
 
 ## 主要功能
 ### 1. 主进程、渲染进程和[窗口通信](https://www.electronjs.org/docs/api/web-contents#contentspostmessagechannel-message-transfer)
